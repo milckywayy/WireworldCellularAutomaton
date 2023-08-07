@@ -14,5 +14,10 @@ public class Cell extends JButton {
         setBackground(BACKGROUND_COLOR);
         setBorder(BorderFactory.createLineBorder(MARGIN_COLOR, MARGIN_SIZE));
 
+        super.addActionListener(e -> clickHandle());
+    }
+
+    private void clickHandle() {
+        System.out.println("lula");
     }
 }
