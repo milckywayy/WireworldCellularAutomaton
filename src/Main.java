@@ -1,5 +1,10 @@
+import wireworld.Wireworld;
+import com.formdev.flatlaf.FlatDarculaLaf;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello WireWorld!");
+        FlatDarculaLaf.setup();
+
+        Wireworld wireworld = new Wireworld();
     }
 }
