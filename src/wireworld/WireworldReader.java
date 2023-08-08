@@ -35,7 +35,7 @@ public class WireworldReader {
 
                 for (String element : elements) {
                     counter++;
-                    if (Integer.parseInt(element) < 0 || Integer.parseInt(element) >= Const.CELLS_STATES_NUM) {
+                    if (Integer.parseInt(element) < 0 || Integer.parseInt(element) >= Const.CELL_STATES_NUM) {
                         throw new IOException("Wireworld contains unsupported cells.");
                     }
                     data.add(Integer.parseInt(element));
