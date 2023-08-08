@@ -18,7 +18,7 @@ public class Cell extends JButton {
     private final int x;
     private final int y;
 
-    public Cell(int x, int y) {
+    public Cell(int y, int x) {
         this.x = x;
         this.y = y;
 
@@ -57,14 +57,14 @@ public class Cell extends JButton {
         ArrayList<Integer> neighbours = new ArrayList<>(Arrays.asList(0, 0));
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
-                int row = (x + i + Const.CELLS_X) % Const.CELLS_X;
-                int col = (y + j + Const.CELLS_Y) % Const.CELLS_Y;
+                int y = (this.y + j + Const.CELLS_Y) % Const.CELLS_Y;
+                int x = (this.x + i + Const.CELLS_X) % Const.CELLS_X;
 
-                if (row == x && col == y) {
+                if (y == this.y && x == this.x) {
                     continue;
                 }
 
-                int cell_state = ((Cell)cells.getElement(row, col)).getState();
+                int cell_state = ((Cell)cells.getElement(y, x)).getState();
                 neighbours.set(cell_state, neighbours.get(cell_state) + 1);
             }
         }
