@@ -6,6 +6,8 @@ public class Const {
     public static final int CELLS_X = 25;
     public static final int CELLS_Y = 25;
 
+    public static final int CELLS_STATES_NUM = 2;
+
     public static final int GENERATION_SPEED = 100;
 
     public static final int CELL_MARGIN_SIZE = 1;

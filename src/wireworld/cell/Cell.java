@@ -1,7 +1,6 @@
 package wireworld.cell;
 
 import matrix.Matrix;
-import wireworld.CellInterface;
 import wireworld.Const;
 
 import javax.swing.*;
@@ -13,7 +12,7 @@ public class Cell extends JButton {
     private int stateIndex = 0;
     private int stateToChangeIndex = 0;
     private final List<Object> states = new ArrayList<>(Arrays.asList(new CellDead(), new CellAlive()));
-    private CellInterface state = (CellInterface) states.get(stateIndex);
+    private CellState state = (CellState) states.get(stateIndex);
 
     private final int x;
     private final int y;
@@ -41,7 +40,7 @@ public class Cell extends JButton {
     public void setState(int stateIndex) {
         this.stateIndex = stateIndex;
         stateToChangeIndex = stateIndex;
-        state = (CellInterface) states.get(this.stateIndex);
+        state = (CellState) states.get(this.stateIndex);
         setBackground(state.getColor());
     }
 

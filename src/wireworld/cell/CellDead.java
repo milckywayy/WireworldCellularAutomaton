@@ -1,12 +1,11 @@
 package wireworld.cell;
 
 import matrix.Matrix;
-import wireworld.CellInterface;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-public class CellDead implements CellInterface {
+public class CellDead implements CellState {
     private final Color BACKGROUND_COLOR = new Color(255, 255, 255);
 
     public CellDead() {
