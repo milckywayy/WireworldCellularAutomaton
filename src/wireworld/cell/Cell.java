@@ -11,7 +11,10 @@ import java.util.List;
 public class Cell extends JButton {
     private int stateIndex = 0;
     private int stateToChangeIndex = 0;
-    private final List<Object> states = new ArrayList<>(Arrays.asList(new CellDead(), new CellAlive()));
+    private final List<Object> states = new ArrayList<>(Arrays.asList(  new CellEmpty(),
+                                                                        new CellConductor(),
+                                                                        new CellElectronHead(),
+                                                                        new CellElectronTail()));
     private CellState state = (CellState) states.get(stateIndex);
 
     private final int x;
@@ -53,7 +56,11 @@ public class Cell extends JButton {
     }
 
     public ArrayList<Integer> countNeighbours(Matrix cells) {
-        ArrayList<Integer> neighbours = new ArrayList<>(Arrays.asList(0, 0));
+        ArrayList<Integer> neighbours = new ArrayList<>();
+        for (int i = 0; i < Const.CELL_STATES_NUM; i++) {
+            neighbours.add(0);
+        }
+
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 int y = (this.y + j + Const.CELLS_Y) % Const.CELLS_Y;
