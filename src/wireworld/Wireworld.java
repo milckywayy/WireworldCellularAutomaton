@@ -75,18 +75,6 @@ public class Wireworld extends JFrame {
         }
     }
 
-    private String showFileDialog() {
-
-        int returnValue = fileChooser.showOpenDialog(null);
-
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            return selectedFile.getAbsolutePath();
-        }
-
-        return null;
-    }
-
     public void readWireworldFromFile() {
         Matrix wireworld;
 
@@ -113,5 +101,17 @@ public class Wireworld extends JFrame {
         }
         catch (NullPointerException ignored) {
         }
+    }
+
+    private String showFileDialog() {
+
+        int returnValue = fileChooser.showOpenDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            return selectedFile.getAbsolutePath();
+        }
+
+        return null;
     }
 }

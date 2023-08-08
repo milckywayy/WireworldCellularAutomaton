@@ -3,7 +3,6 @@ package wireworld;
 import matrix.Matrix;
 import wireworld.cell.Cell;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -57,7 +56,7 @@ public class WireworldReader {
 
             for (int m = 0; m < wireworld.getM(); m++) {
                 for (int n = 0; n < wireworld.getN(); n++) {
-                    fileWriter.write(String.valueOf(((Cell)wireworld.getElement(m, n)).getState()) + " ");
+                    fileWriter.write(((Cell) wireworld.getElement(m, n)).getState() + " ");
                 }
                 fileWriter.write("\n");
             }
