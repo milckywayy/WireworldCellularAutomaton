@@ -5,37 +5,49 @@ import wireworld.cell.Cell;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Wireworld extends JFrame {
     private JPanel WireworldGUI;
     private JPanel WireworldPanel;
-    private JButton button1;
+    private JButton RunButton;
     private JButton button2;
+    private JButton NextGenButton;
     private Matrix cells;
-
-    private final int CELL_NUM = 30;
-    private final int CELL_SIZE = 20;
 
     public Wireworld() {
         setContentPane(WireworldGUI);
 
-        WireworldPanel.removeAll();
-        WireworldPanel.setLayout(new GridLayout(CELL_NUM, CELL_NUM));
-        Cell c;
-        cells = new Matrix(CELL_NUM, CELL_NUM);
-        for (int i = 0; i < CELL_NUM * CELL_NUM; i++) {
-            c = new Cell();
-            c.setPreferredSize(new Dimension(10, 10));
-            cells.setElement(i, c);
-            WireworldPanel.add(c);
+        Timer timer = new Timer(Const.GENERATION_SPEED, e -> computeNextGeneration());
+        RunButton.addActionListener(e -> timer.start());
+        NextGenButton.addActionListener(e -> computeNextGeneration());
+
+        WireworldPanel.setLayout(new GridLayout(Const.CELLS_X, Const.CELLS_Y));
+        cells = new Matrix(Const.CELLS_X, Const.CELLS_Y);
+        for (int i = 0; i < Const.CELLS_X; i++) {
+            for (int j = 0; j < Const.CELLS_Y; j++) {
+                Cell c = new Cell(i, j);
+                cells.setElement(i, j, c);
+                WireworldPanel.add(c);
+            }
         }
         WireworldPanel.revalidate();
 
         setTitle("Wireworld Cellular Automaton");
-//        setMinimumSize(new Dimension(400, 400));
-        setMinimumSize(new Dimension(CELL_SIZE * CELL_NUM, CELL_SIZE * CELL_NUM));
+        setMinimumSize(new Dimension(Const.CELL_SIZE * Const.CELLS_X, Const.CELL_SIZE * Const.CELLS_Y));
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    public void computeNextGeneration() {
+        for (int i = 0; i < Const.CELLS_X * Const.CELLS_Y; i++) {
+            ((Cell)cells.getElement(i)).computeNextState(cells);
+        }
+
+        for (int i = 0; i < Const.CELLS_X * Const.CELLS_Y; i++) {
+            ((Cell)cells.getElement(i)).setState(((Cell)cells.getElement(i)).getStateToChangeIndex());
+        }
     }
 }

@@ -1,34 +1,75 @@
 package wireworld.cell;
 
+import matrix.Matrix;
 import wireworld.CellInterface;
+import wireworld.Const;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Cell extends JButton {
-    private final int MARGIN_SIZE = 1;
-    private final Color MARGIN_COLOR = new Color(198, 206, 208, 255);
-
     private int stateIndex = 0;
-    private List<Object> states = new ArrayList<>(Arrays.asList(new CellDead(), new CellAlive()));
+    private int stateToChangeIndex = 0;
+    private final List<Object> states = new ArrayList<>(Arrays.asList(new CellDead(), new CellAlive()));
     private CellInterface state = (CellInterface) states.get(stateIndex);
 
-    public Cell() {
+    private final int x;
+    private final int y;
+
+    public Cell(int x, int y) {
+        this.x = x;
+        this.y = y;
+
         setFocusable(false);
 
         setBackground(state.getColor());
-        setBorder(BorderFactory.createLineBorder(MARGIN_COLOR, MARGIN_SIZE));
+        setBorder(BorderFactory.createLineBorder(Const.CELL_MARGIN_COLOR, Const.CELL_MARGIN_SIZE));
 
         super.addActionListener(e -> clickHandle());
     }
 
+    public int getState() {
+        return stateIndex;
+    }
+
+    public int getStateToChangeIndex() {
+        return stateToChangeIndex;
+    }
+
     public void setState(int stateIndex) {
         this.stateIndex = stateIndex;
-        this.state = (CellInterface) states.get(this.stateIndex);
+        stateToChangeIndex = stateIndex;
+        state = (CellInterface) states.get(this.stateIndex);
         setBackground(state.getColor());
+    }
+
+    public void setStateToChangeIndex(int index) {
+        stateToChangeIndex = index;
+    }
+
+    public void computeNextState(Matrix cells) {
+        state.computeNextState(this, cells);
+    }
+
+    public ArrayList<Integer> countNeighbours(Matrix cells) {
+        ArrayList<Integer> neighbours = new ArrayList<>(Arrays.asList(0, 0));
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                int row = (x + i + Const.CELLS_X) % Const.CELLS_X;
+                int col = (y + j + Const.CELLS_Y) % Const.CELLS_Y;
+
+                if (row == x && col == y) {
+                    continue;
+                }
+
+                int cell_state = ((Cell)cells.getElement(row, col)).getState();
+                neighbours.set(cell_state, neighbours.get(cell_state) + 1);
+            }
+        }
+
+        return neighbours;
     }
 
     private void clickHandle() {
