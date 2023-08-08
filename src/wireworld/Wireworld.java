@@ -27,7 +27,8 @@ public class Wireworld extends JFrame {
         timer = new Timer(Const.GENERATION_SPEED, e -> computeNextGeneration());
         runButton.addActionListener(e -> runAutomaton());
         nextGenButton.addActionListener(e -> computeNextGeneration());
-        chooseReadFileButton.addActionListener(e -> ReadWireworldFromFile());
+        chooseReadFileButton.addActionListener(e -> readWireworldFromFile());
+        chooseExportFileButton.addActionListener(e -> writeWireworldToFile());
 
         wireworldPanel.setLayout(new GridLayout(Const.CELLS_Y, Const.CELLS_X));
         cells = new Matrix(Const.CELLS_Y, Const.CELLS_X);
@@ -86,7 +87,7 @@ public class Wireworld extends JFrame {
         return null;
     }
 
-    public void ReadWireworldFromFile() {
+    public void readWireworldFromFile() {
         Matrix wireworld;
 
         try {
@@ -99,20 +100,18 @@ public class Wireworld extends JFrame {
             return;
         }
 
-        if (wireworld.getM() != Const.CELLS_Y || wireworld.getN() != Const.CELLS_X) {
-            JOptionPane.showMessageDialog(this, "Invalid Wireworld size.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        for (int i = 0; i < wireworld.size(); i++) {
-            if (((Integer)wireworld.getElement(i)) < 0 || ((Integer)wireworld.getElement(i)) >= Const.CELLS_STATES_NUM) {
-                JOptionPane.showMessageDialog(this, "Wireworld contains unsupported cells.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
-
         for (int i = 0; i < wireworld.size(); i++) {
             ((Cell)cells.getElement(i)).setState((Integer)wireworld.getElement(i));
+        }
+    }
+
+    public void writeWireworldToFile() {
+        try {
+            reader.writeWireworldToFile(cells, showFileDialog());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException ignored) {
         }
     }
 }

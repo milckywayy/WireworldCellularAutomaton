@@ -1,9 +1,12 @@
 package wireworld;
 
 import matrix.Matrix;
+import wireworld.cell.Cell;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +36,35 @@ public class WireworldReader {
 
                 for (String element : elements) {
                     counter++;
+                    if (Integer.parseInt(element) < 0 || Integer.parseInt(element) >= Const.CELLS_STATES_NUM) {
+                        throw new IOException("Wireworld contains unsupported cells.");
+                    }
                     data.add(Integer.parseInt(element));
                 }
             }
         }
 
-        if (m == 0 || counter == 0) {
+        if (m != Const.CELLS_Y || (counter / m) != Const.CELLS_X) {
             throw new IOException("Wrong Wireworld format.");
         }
 
         return new Matrix(data, m, counter / m);
+    }
+
+    public void writeWireworldToFile(Matrix wireworld ,String filePath) throws IOException {
+        try {
+            FileWriter fileWriter = new FileWriter(filePath);
+
+            for (int m = 0; m < wireworld.getM(); m++) {
+                for (int n = 0; n < wireworld.getN(); n++) {
+                    fileWriter.write(String.valueOf(((Cell)wireworld.getElement(m, n)).getState()) + " ");
+                }
+                fileWriter.write("\n");
+            }
+
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new IOException("Couldn't write matrix to file.");
+        }
     }
 }
